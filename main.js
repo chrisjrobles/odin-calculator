@@ -60,7 +60,6 @@ const buttons = [...document.querySelectorAll('.input')];
 buttons.forEach(button => {
   button.addEventListener('click', () => {
     currentValue = getUpdatedValueState(button.textContent, currentValue);
-    console.log(`currentValue: ${JSON.stringify(currentValue)}`);
     const display = document.querySelector('#display');
     display.textContent = getUpdatedDisplayValue(currentValue);
   });
