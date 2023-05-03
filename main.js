@@ -26,7 +26,6 @@ const getNewValueState = () => {
     first: '',
     operator: null,
     second: '',
-    result: null,
   };
 }
 
@@ -34,7 +33,9 @@ const getUpdatedValueState = (input, currentValue) => {
   if (input === CLEAR) {
     currentValue = getNewValueState();
   } else if (input === EQUALS) {
-    currentValue.result = operate(currentValue.operator, Number(currentValue.first), Number(currentValue.second));
+    currentValue.first = operate(currentValue.operator, Number(currentValue.first), Number(currentValue.second));
+    currentValue.second = '';
+    currentValue.operator = null
   } else if (Object.keys(operations).includes(input)) {
     currentValue.operator = input;
   } else if (currentValue.operator) {
@@ -46,12 +47,9 @@ const getUpdatedValueState = (input, currentValue) => {
   return currentValue;
 }
 
-const getUpdatedDisplayValue = ({first, operator, second, result}) => {
+const getUpdatedDisplayValue = ({first, operator, second}) => {
   if (!first) {
     return 0;
-  }
-  if (result) {
-    return result;
   }
 
   return `${first}${operator ? ' ': ''}${operator ? operator : ''}${second ? ' ' : ''}${second}`;
@@ -62,6 +60,7 @@ const buttons = [...document.querySelectorAll('.input')];
 buttons.forEach(button => {
   button.addEventListener('click', () => {
     currentValue = getUpdatedValueState(button.textContent, currentValue);
+    console.log(`currentValue: ${JSON.stringify(currentValue)}`);
     const display = document.querySelector('#display');
     display.textContent = getUpdatedDisplayValue(currentValue);
   });
